@@ -2,8 +2,12 @@ package br.com.alura.screensound.main;
 
 import br.com.alura.screensound.model.Artist;
 import br.com.alura.screensound.model.ArtistType;
+import br.com.alura.screensound.model.Songs;
 import br.com.alura.screensound.repository.ArtistRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -88,9 +92,34 @@ public class Main {
     }
 
     private void registerSongs() {
+        System.out.println("Deseja cadastrar musica de qual artista?");
+        var artistName = input.nextLine();
+        Optional<Artist> artist = repository.findByNameContainingIgnoreCase(artistName);
+
+        if(artist.isPresent()) {
+            System.out.println("Informe o titulo da musíca?");
+            var songName = input.nextLine();
+            Songs song = new Songs(songName);
+            song.setArtist(artist.get());
+            artist.get().getSongs().add(song);
+            repository.save(artist.get());
+        } else {
+            System.out.println("Artista não encontrado, deseja adiciona-lo ? (S/N)");
+             var response = input.nextLine();
+            if (response.equalsIgnoreCase("S")) {
+                registerArtist();
+            } else if (response.equalsIgnoreCase("N")) {
+                System.out.println("Ok, retornando ao menu inicial.");
+                showMenu();
+            } else {
+                System.out.println("Opção Invalida, retornando ao menu inicial!");
+            }
+        }
     }
 
     private void listSongs() {
+        List<Artist> artists = repository.findAll();
+        artists.forEach(System.out::println);
     }
 
     private void searchMusicByArtists() {

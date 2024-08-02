@@ -19,7 +19,7 @@ public class Artist {
     @Enumerated(EnumType.STRING)
     private ArtistType type;
 
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Songs> songs = new ArrayList<>();
 
     public Artist(){}
@@ -63,6 +63,6 @@ public class Artist {
     public String toString() {
         return "\nArtista: " + name +
                 ", Tipo: " + type +
-                ", Músicas:" + songs;
+                ", Músicas: " + songs;
     }
 }
