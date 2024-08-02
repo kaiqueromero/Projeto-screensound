@@ -22,6 +22,13 @@ public class Artist {
     @OneToMany(mappedBy = "artist")
     private List<Songs> songs = new ArrayList<>();
 
+    public Artist(){}
+
+    public Artist(String artistName, ArtistType artistType) {
+        this.name = artistName;
+        this.type = artistType;
+    }
+
     public Long getId() {
         return id;
     }
@@ -30,9 +37,7 @@ public class Artist {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name;}
 
     public void setName(String name) {
         this.name = name;
